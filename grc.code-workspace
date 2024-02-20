@@ -1,0 +1,44 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "files.eol": "\n",
+    "files.encoding": "utf8",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "editor.detectIndentation": false,
+    "editor.indentSize": "tabSize",
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "REditorSupport.r",
+    "[markdown]": {
+      "files.trimTrailingWhitespace": false,
+    },
+    "[python]": {
+      "editor.tabSize": 4
+    },
+    "[rust]": {
+      "editor.tabSize": 4
+    },
+    "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "typescript.inlayHints.parameterTypes.enabled": true,
+    "typescript.inlayHints.variableTypes.enabled": true,
+    "typescript.inlayHints.variableTypes.suppressWhenTypeMatchesName": true,
+    "typescript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true,
+    "typescript.format.enable": true,
+    "css.format.enable": true,
+    "html.format.enable": true,
+  },
+  "extensions": {
+    "recommendations": [
+      "reditorsupport.r",
+      "rdebugger.r-debugger"
+    ],
+    "unwantedRecommendations": []
+  }
+}

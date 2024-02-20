@@ -1,0 +1,58 @@
+// cSpell Settings
+{
+  // Version of the setting file.  Always 0.2
+  "version": "0.2",
+  //
+  "enabled": true,
+  // language - current active spelling language
+  "language": "en, es",
+  //
+  "languageSettings": [
+    {
+      "languageId": "python",
+      "includeRegExpList": [
+        "#.*",
+        "/[']{3}*?[']{3}/g",
+        "/[\"]{3}*?[\"]{3}/g"
+      ]
+    },
+    {
+      "languageId": "markdown",
+      "ignoreRegExpList": [
+        "[`]{3}(.+\n)+[`]{3}",
+        "[$]{1,2}.*?[$]{1,2}"
+      ]
+    },
+    {
+      "languageId": "rust",
+      "includeRegExpList": [
+        "[/]{2,3}.*",
+        "[/][*]+\n?([\\S\\s]*?)[*][/]"
+      ]
+    }
+  ],
+  // flagWords - list of words to be always considered incorrect
+  // This is useful for offensive words and common spelling errors.
+  "flagWords": [
+    "lenght"
+  ],
+  //
+  "enableFiletypes": [
+    "r",
+    "html",
+    "css",
+    "markdown"
+  ],
+  // Specify paths/files to ignore.
+  "ignorePaths": [
+    "cspell.json",
+    "node_modules/**", // will cause cspell to ignore anything in the node_modules directory.
+    ".git", // Ignore the .git directory
+    "*.toml" // Ignore all .toml files.
+  ],
+  // words - list of words to be always considered correct
+  "words": [],
+  // custom dictionaries
+  "dictionaryDefinitions": [],
+  "dictionaries": []
+}
