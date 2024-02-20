@@ -1,0 +1,7 @@
+# Genética de rasgos complejos
+
+## Enviromenment configuration
+
+```R
+install.packages("languageserver")
+```
