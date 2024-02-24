@@ -1,0 +1,19 @@
+Linear mixed model fit by REML ['lmerMod']
+Formula: Pelargonina ~ (1 | Line)
+   Data: subachoque
+
+REML criterion at convergence: 114.4
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-2.55511 -0.23082  0.06045  0.30564  1.65776 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ Line     (Intercept) 134.3562 11.5912 
+ Residual               0.2827  0.5317 
+Number of obs: 30, groups:  Line, 10
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)   24.309      3.667    6.63
