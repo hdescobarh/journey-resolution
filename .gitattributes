@@ -11,9 +11,9 @@
 *.rds      binary
 *.Rd       text
 *.Rdx      binary
-*.Rmd	   text
-*.R  	   text
-*.Rproj text
+*.Rmd	     text
+*.[Rr]  	 text
+*.Rproj    text
 *.[Rr]md   linguist-detectable
 ## Windows scripts
 *.bat      text eol=crlf
