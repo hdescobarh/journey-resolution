@@ -13,7 +13,13 @@
     "editor.detectIndentation": false,
     "editor.indentSize": "tabSize",
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "REditorSupport.r",
+    "[shellscript]": {
+      "files.eol": "\n",
+      "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[r]": {
+      "editor.defaultFormatter": "REditorSupport.r",
+    },
     "[markdown]": {
       "files.trimTrailingWhitespace": false,
     },
@@ -37,7 +43,9 @@
   "extensions": {
     "recommendations": [
       "reditorsupport.r",
-      "rdebugger.r-debugger"
+      "rdebugger.r-debugger",
+      "foxundermoon.shell-format",
+      "timonwong.shellcheck"
     ],
     "unwantedRecommendations": []
   }
