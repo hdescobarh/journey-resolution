@@ -6,12 +6,22 @@ Almaceno soluciones a algunas asignaciones de mi ultimo semestre ðŸ¥³ 2024-01 ðŸ
 
 ## Enviromenment configuration
 
-Este paquete es necesario para usar las funcionalidades para R de VS Code
+### R
+
+- Este paquete es necesario para usar las funcionalidades para R de VS Code
 
 ```R
 update.packages(ask=FALSE)
 install.packages("languageserver")
 ```
+
+- Kernel de R para Jupyter. Recordar tener installado Jupyter
+
+```R
+install.packages('IRkernel')
+IRkernel::installspec()
+```
+
 
 ## Estructura
 
