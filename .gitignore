@@ -5,8 +5,19 @@
 
 dist/
 
-# dependencies
+# Jupyter
+**/.ipynb_checkpoints/
+**/.virtual_documents/
+
+# Python Byte-compiled / optimized / DLL files
+**/__pycache__/
+
+# PyTest
+**/.pytest_cache/
+
+# dependencies and virtual enviroments
 node_modules/
+.venv
 
 # logs
 npm-debug.log*
