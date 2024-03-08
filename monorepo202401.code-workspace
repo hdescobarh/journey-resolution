@@ -66,6 +66,9 @@
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
+    "cSpell.import": [
+      "./cspell.json"
+    ],
   },
   "extensions": {
     "recommendations": [

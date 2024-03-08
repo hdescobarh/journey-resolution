@@ -38,6 +38,8 @@
   ],
   //
   "enableFiletypes": [
+    "jupyter",
+    "python",
     "r",
     "html",
     "css",
@@ -48,7 +50,8 @@
     "cspell.json",
     "node_modules/**", // will cause cspell to ignore anything in the node_modules directory.
     ".git", // Ignore the .git directory
-    "*.toml" // Ignore all .toml files.
+    "*.toml", // Ignore all .toml files.
+    "*.code-workspace"
   ],
   // words - list of words to be always considered correct
   "words": [
