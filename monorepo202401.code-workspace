@@ -66,6 +66,7 @@
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
+    "cSpell.language": "en, es",
     "cSpell.import": [
       "./cspell.json"
     ],
