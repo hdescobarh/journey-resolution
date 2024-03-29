@@ -55,9 +55,14 @@
   ],
   // words - list of words to be always considered correct
   "words": [
+    "blastn",
+    "blastp",
+    "blastx",
+    "BRCA",
     "Escobar",
     "genotipado",
     "genotipados",
+    "Isoform",
     "lmer",
     "multialélico",
     "multialélicos",
