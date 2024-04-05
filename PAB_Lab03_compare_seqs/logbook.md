@@ -34,12 +34,12 @@ El taller solo requiere dos fragmentos, uno del mismo NC_002695.2 y de otra cepa
 
 Considerando quizá ver el efecto de la divergencia, se agrego un genero de la misma familia Enterobacteriaceae.
 
-| Taxon | RefSeq Accession | Interval | Genes |
-| :-: | :-: | :-: | :-: |
-| Escherichia coli O157:H7 str. Sakai| NC_002695.2 | 512000..514000 | yajR (-), cyoE (-), cyoD (-) |
-| Escherichia coli str. K-12 substr. MG1655 | NC_000913.3 | 512000..514000 | glsaA (+), ybaT (+), cuerR   (+)|
-| Escherichia coli str. K-12 substr. MG1655 | NC_000913.3 | 445900..447900  | yajR (-), cyoE (-), cyoD(-) |
-| Shigella dysenteriae strain SWHEFF_49| NZ_CP055055.1 | 1174030..1176030| HUZ68_RS05625 (-), cyoE (-), 	HUZ68_RS05635(-)| 
+| ID | Taxon | RefSeq Accession | Interval | Genes |
+| :-: | :-: | :-: | :-: | :-: |
+| ecoli_sakai_a| Escherichia coli O157:H7 str. Sakai| NC_002695.2 | 512000..514000 | yajR (-), cyoE (-), cyoD (-) |
+| ecoli_k12_b| Escherichia coli str. K-12 substr. MG1655 | NC_000913.3 | 512000..514000 | glsaA (+), ybaT (+), cuerR   (+)|
+| ecoli_k12_a| Escherichia coli str. K-12 substr. MG1655 | NC_000913.3 | 445900..447900  | yajR (-), cyoE (-), cyoD(-) |
+| edisenteriae_a| Shigella dysenteriae strain SWHEFF_49| NZ_CP055055.1 | 1174030..1176030| HUZ68_RS05625 (-), cyoE (-), 	HUZ68_RS05635(-)| 
 
 
 
