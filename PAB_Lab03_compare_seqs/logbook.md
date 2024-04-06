@@ -109,3 +109,19 @@ makeblastdb -dbtype "nucl" -in "../Data/Sequences/ecoli_sakai_genome.fasta" -par
 mkdir -p "../Results"
 blastn -query "../Data/Sequences/ecoli_k12_a.fasta" -task "blastn" -db "../Data/BlastDB/ecoli_sakai_genome_single" -out "../Results/prueba_blast" -evalue 0.05 -word_size 11 -gapopen 5 -gapextend 2 -reward 2 -penalty -3 -outfmt 7
 ```
+
+## 2024-04-06
+
+### Ejercicio alineamiento global
+
+Se trabajará con el script en "example 3-1. Trace-back with Needleman-Wunsch algorithm" del libro __BLAST__. Korf, Yandell & Bedell (2003).
+
+```bash
+wget "https://resources.oreilly.com/examples/9780596002992/-/raw/master/examples/Ch3/example3-1.pl" -O "NW_book_blast_korf.pl"
+```
+
+Definir 2 secuencia s1 y s2 similares de longitud 5, y perturbarlas introduciendo lo siguientes cambios:
+
+1 a 3 sustituciones consecutivas en s1 (3 casos)
+1 a 2 inserciones consecutivas en s1 (2 casos)
+1 a 2 inserciones consecutivas en s2 (2 casos)
