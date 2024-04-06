@@ -92,7 +92,20 @@ Leer [Building a BLAST database with your (local) sequences](https://www.ncbi.nl
 makeblastdb -h
 ```
 
+- Ejemplo:
+
 ```bash
-mkdir -p "../Data/BlastDBs"
-makeblastdb -dbtype "nucl" -in "../Data/Sequences/ecoli_sakai_genome.fasta" -parse_seqids -title "E. Coli. str Sakai - single sequence" -out "../Data/BlastDBs/ecoli_sakai_genome_single" -taxid 386585 -logfile "../Data/BlastDBs/ecoli_sakai_genome.makeblastdb.log"
+mkdir -p "../Data/BlastDB"
+makeblastdb -dbtype "nucl" -in "../Data/Sequences/ecoli_sakai_genome.fasta" -parse_seqids -title "E. Coli. str Sakai - single sequence" -out "../Data/BlastDB/ecoli_sakai_genome_single" -taxid 386585 -logfile "../Data/BlastDB/ecoli_sakai_genome.makeblastdb.log"
+```
+
+### Corriendo blastn
+
+[Options for the command-line applications](https://www.ncbi.nlm.nih.gov/books/NBK279684/#appendices.Options_for_the_commandline_a)
+
+- Ejemplo:
+
+```bash
+mkdir -p "../Results"
+blastn -query "../Data/Sequences/ecoli_k12_a.fasta" -task "blastn" -db "../Data/BlastDB/ecoli_sakai_genome_single" -out "../Results/prueba_blast" -evalue 0.05 -word_size 11 -gapopen 5 -gapextend 2 -reward 2 -penalty -3 -outfmt 7
 ```
