@@ -125,3 +125,14 @@ Definir 2 secuencia s1 y s2 similares de longitud 5, y perturbarlas introduciend
 1 a 3 sustituciones consecutivas en s1 (3 casos)
 1 a 2 inserciones consecutivas en s1 (2 casos)
 1 a 2 inserciones consecutivas en s2 (2 casos)
+
+| id | s1 | s2 |
+| :-: | :-: | :-: |
+| s1_s2_0 | GAGAG | GATAG |
+| s1_sub1 | GTGAG | GATAG |
+| s1_sub2 | GTAAG | GATAG |
+| s1_sub3 | GACAG | GATAG |
+| s1_ins1 | GAGAAG | GATAG |
+| s1_ins2 | TAGAAG | GATAG|
+| s2_ins1 | GAGAG | GAGTAG |
+| s2_ins2 | GAGAG | GAGTGAG |
