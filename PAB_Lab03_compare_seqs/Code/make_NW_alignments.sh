@@ -10,6 +10,6 @@ while read -r line; do
   IFS=","
   ARRAY=($line)
   ID="${ARRAY[0]}"
-  ALIGNMENT=$(perl "./third_party/NW_book_blast_korf.pl" "${ARRAY[1]}" "${ARRAY[1]}")
+  ALIGNMENT=$(perl "./third_party/NW_book_blast_korf.pl" "${ARRAY[1]}" "${ARRAY[2]}")
   printf "%s,%s\n" $ID $(sed -z "s/\n/\\\n/" <<< $ALIGNMENT) >> $OUTPUT_FILE
 done < "$SEQUENCES"
