@@ -49,7 +49,8 @@ Considerando quizá ver el efecto de la divergencia, se agrego un genero de la m
 | ecoli_k12_b| Escherichia coli str. K-12 substr. MG1655 | NC_000913.3 | 512000..514000 | glsaA (+), ybaT (+), cuerR   (+)|
 | ecoli_k12_a| Escherichia coli str. K-12 substr. MG1655 | NC_000913.3 | 445900..447900  | yajR (-), cyoE (-), cyoD(-) |
 | edisenteriae_a| Shigella dysenteriae strain SWHEFF_49| NZ_CP055055.1 | 1174030..1176030| HUZ68_RS05625 (-), cyoE (-), 	HUZ68_RS05635(-)| 
-
+| ecoli_sakai_c| Escherichia coli O157:H7 str. Sakai| NC_002695.2 |538000..540000 | mdlB (+), glnK (+), amtB (+) |
+| edisenteriae_c| Shigella dysenteriae strain SWHEFF_49| NZ_CP055055.1 | 1199800-1201800| HUZ68_RS05735 (+), glnK (+), 	amtB (+)| 
 
 
 ### Obtención de los datos  
@@ -105,6 +106,8 @@ makeblastdb -dbtype "nucl" -in "../Data/Sequences/ecoli_sakai_genome.fasta" -par
 
 - Ejemplo:
 
+A modo de ilustración, los valores de word_size como los de esquema de puntuación (scores y penalizaciones) son los que la tarea "blastn" tiene por defecto. El E-value por defecto es 10.0.
+
 ```bash
 mkdir -p "../Results"
 blastn -query "../Data/Sequences/ecoli_k12_a.fasta" -task "blastn" -db "../Data/BlastDB/ecoli_sakai_genome_single" -out "../Results/prueba_blast" -evalue 0.05 -word_size 11 -gapopen 5 -gapextend 2 -reward 2 -penalty -3 -outfmt 7
@@ -136,3 +139,7 @@ Definir 2 secuencia s1 y s2 similares de longitud 5, y perturbarlas introduciend
 | s1_ins2 | TAGAAG | GATAG|
 | s2_ins1 | GAGAG | GAGTAG |
 | s2_ins2 | GAGAG | GAGTGAG |
+
+## 2024-04-18
+
+__Siguiendo actividades de la clase del 16 de abril__

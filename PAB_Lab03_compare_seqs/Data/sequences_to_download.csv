@@ -4,3 +4,5 @@ ecoli_sakai_a,Escherichia coli O157:H7 str. Sakai,NC_002695.2,512000,514000
 ecoli_k12_b,Escherichia coli str. K-12 substr. MG1655,NC_000913.3,512000,514000
 ecoli_k12_a,Escherichia coli str. K-12 substr. MG1655,NC_000913.3,445900,447900
 edisenteriae_a,Shigella dysenteriae strain SWHEFF_49,NZ_CP055055.1,1174030,1176030
+ecoli_sakai_c,Escherichia coli O157:H7 str. Sakai,NC_002695.2,538000,540000
+edisenteriae_c,Shigella dysenteriae strain SWHEFF_49,NZ_CP055055.1,1199800,1201800
