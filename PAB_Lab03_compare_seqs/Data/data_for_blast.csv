@@ -1,0 +1,8 @@
+id,taxon,txid,refseq_accession,start,end,use
+ecoli_sakai_genome,Escherichia coli O157:H7 str. Sakai,386585,NC_002695.2,,,makedb
+ecoli_sakai_a,Escherichia coli O157:H7 str. Sakai,386585,NC_002695.2,512000,514000,query
+ecoli_k12_b,Escherichia coli str. K-12 substr. MG1655,511145,NC_000913.3,512000,514000,query
+ecoli_k12_a,Escherichia coli str. K-12 substr. MG1655,511145,NC_000913.3,445900,447900,query
+edisenteriae_a,Shigella dysenteriae strain SWHEFF_49,622,NZ_CP055055.1,1174030,1176030,query
+ecoli_sakai_c,Escherichia coli O157:H7 str. Sakai,386585,NC_002695.2,538000,540000,query
+edisenteriae_c,Shigella dysenteriae strain SWHEFF_49,622,NZ_CP055055.1,1199800,1201800,query
