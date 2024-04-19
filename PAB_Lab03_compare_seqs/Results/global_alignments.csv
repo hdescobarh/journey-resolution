@@ -1,0 +1,9 @@
+id,alignment
+s1_s2_0,GAGAG\nGATAG
+s1_sub1,G-TGAG\nGAT-AG
+s1_sub2,GTA-AG\nG-ATAG
+s1_sub3,GACAG\nGATAG
+s1_ins1,GAGAAG\nGA-TAG
+s1_ins2,TAGA-AG\n--GATAG
+s2_ins1,GAG-AG\nGAGTAG
+s2_ins2,GA--GAG\nGAGTGAG
