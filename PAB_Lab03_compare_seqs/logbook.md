@@ -143,3 +143,15 @@ Definir 2 secuencia s1 y s2 similares de longitud 5, y perturbarlas introduciend
 ## 2024-04-18
 
 __Siguiendo actividades de la clase del 16 de abril__
+
+Agregué script para de forma automática y a partir de una tabla realice la descarga de datos, creación de la base de datos para Blast y las búsquedas.
+
+He preparado un entorno de Conda con las características que requiero para este taller y para HMMs:
+
+```bash
+conda env create --prefix ~/env -f environment.yml 
+conda config --set env_prompt '({name})' # Eso hace que aparezca el nombre en lugar de la ruta absoluta
+conda activate ~/env
+```
+
+La parte de código creo está finalizada.
