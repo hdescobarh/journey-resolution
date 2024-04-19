@@ -82,7 +82,9 @@
       "ms-python.flake8",
       "ms-python.isort",
       "ms-toolsai.jupyter",
-      "ms-python.vscode-pylance"
+      "ms-python.vscode-pylance",
+      "mechatroner.rainbow-csv",
+      "richterger.perl"
     ],
     "unwantedRecommendations": []
   }

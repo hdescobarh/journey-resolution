@@ -55,6 +55,7 @@
   ],
   // words - list of words to be always considered correct
   "words": [
+    "Bioinformática",
     "blastn",
     "blastp",
     "blastx",
