@@ -6,9 +6,9 @@
 #SBATCH --time=00:10:00
 #SBATCH --partition=cpu.normal.q
 #SBATCH --cpus-per-task=2
-#SBATCH --job-name=lab03_blast
-#SBATCH --output=lab03_blast-job_%j.out
-#SBATCH --error=lab03_blast-job_%j.err
+#SBATCH --job-name=lab03
+#SBATCH --output=../Results/lab03-job_%j.out
+#SBATCH --error=../Results/lab03-job_%j.err
 
 module purge
 module load envs/anaconda3
