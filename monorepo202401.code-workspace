@@ -66,6 +66,10 @@
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
+    "perl.enable": true,
+    "[perl]": {
+      "editor.defaultFormatter": "richterger.perl"
+    },
     "cSpell.language": "en, es",
     "cSpell.import": [
       "./cspell.json"

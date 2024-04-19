@@ -45,6 +45,12 @@ cpan App::cpanminus
 
 - Instalando servidor de lenguaje
 
+Dependencias en Debian based
+
+```bash
+sudo apt install libanyevent-perl libclass-refresh-perl libcompiler-lexer-perl libdata-dump-perl libio-aio-perl libjson-perl libmoose-perl libpadwalker-perl libscalar-list-utils-perl libcoro-perl
+```
+
 ```bash
 cpanm Perl::LanguageServer
 ```
