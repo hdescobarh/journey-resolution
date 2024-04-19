@@ -39,14 +39,14 @@ echo "Done"
 
 echo "Starting Blast search for ${#QUERIES_PATHS[@]} queries in ${#DB_PATHS[@]} databases.."
 
-mkdir -p "../Results/Blast_searches"
+mkdir -p "../Results/Blast_Searches"
 
 for DB in "${DB_PATHS[@]}"; do
   for QUERY in "${QUERIES_PATHS[@]}"; do
     DB_NAME="$(basename -- "$DB")"
     QUERY_NAME="$(basename -- "$QUERY" ".fasta")"
     echo "Searching ${QUERY_NAME} in ${DB_NAME}..."
-    OUTPUT_PATH="../Results/Blast_searches/db-${DB_NAME}_q-${QUERY_NAME}"
+    OUTPUT_PATH="../Results/Blast_Searches/db-${DB_NAME}_q-${QUERY_NAME}.tsv"
 
     # word_size, scores and gap penalties are the default for the task "blastn"
 
