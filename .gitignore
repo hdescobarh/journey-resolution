@@ -36,6 +36,9 @@ pnpm-debug.log*
 # Windows-specific files
 desktop.ini
 
+# VSCode
+**/perl-lang/
+
 # wildcards
 .trash
 _ignore_*
