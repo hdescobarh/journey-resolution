@@ -96,3 +96,33 @@ Las primeras 2 o 3 letras de las carpetas indican la asignatura asociada.
 - PAB: Programación y algoritmos para Bioinformática
 - FV: Fisiología vegetal
 
+## Conexión a través de un proxy
+
+[SSH to remote hosts through a proxy or bastion with ProxyJump](https://www.redhat.com/sysadmin/ssh-proxy-bastion-proxyjump)
+
+
+- Con ProxyJump
+
+```bash
+ssh -J <user_name>@<jump_server:port> <remote_server:port>
+```
+
+- Con ProxyCommand
+
+```bash
+ssh -o ProxyCommand="ssh -W %h:%p <user_name>@<jump_server>" <remote_server>
+```
+
+- Configurando OpenSSH
+
+```
+### Jump server
+Host <jump_nickname>
+    HostName <jump_server>
+    User <user_name>
+    IdentityFile ~/.ssh/id_rsa
+### Remote host
+Host <remote_nickname>
+    HostName <remote_server>c
+    ProxyJump <jump_nickname>
+```
