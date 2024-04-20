@@ -6,6 +6,17 @@ Almaceno soluciones a algunas asignaciones de mi ultimo semestre 🥳 2024-01 �
 
 ## Enviromenment configuration
 
+### Python
+
+- Creación del entorno virtual a partir de requirements.txt
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
 ### R
 
 - Este paquete es necesario para usar las funcionalidades para R de VS Code
@@ -15,7 +26,7 @@ update.packages(ask=FALSE)
 install.packages("languageserver")
 ```
 
-- Kernel de R para Jupyter. Recordar tener instalado Jupyter
+- Kernel de R para Jupyter. Recordar tener instalado Jupyter en el entorno de Python
 
 ```R
 install.packages('IRkernel')
@@ -55,7 +66,29 @@ sudo apt install libanyevent-perl libclass-refresh-perl libcompiler-lexer-perl l
 cpanm Perl::LanguageServer
 ```
 
-## Estructura
+## Como usar Jupyter para Python y R
+
+- Activar el entorno virtual sí no esta activo
+
+- Iniciar servidor 
+
+```bash
+jupyter notebook
+```
+
+En caso de querer revisar los servidores activos y sus token:
+
+```bash
+jupyter server list
+```
+
+- Seleccionar Kernel
+
+Se puede trabajar con el notebook desde VSCode. Para seleccionar el kernel, es necesario indicar que se conecte a un servidor de Jupyter, colocar URL y password (Token), y seleccionar entre los kernel disponibles.
+
+- __Opción sin servidor__ (solo Python): la extensión de Jupyter también permite seleccionar como "kernel" un entorno virtual de Python. Pero para trabajar con R o MATLAB se debe hacer creando un servidor.
+
+## Estructura de archivos
 
 Las primeras 2 o 3 letras de las carpetas indican la asignatura asociada.
 
