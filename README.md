@@ -41,7 +41,7 @@ IRkernel::installspec()
 
 ### Perl
 
-- Configurando cpan
+- Configurando cpan (para instalar en el home sí no se tiene privilegios)
 
 Sí es la primera vez que se corre, entra en modo configuración
 
@@ -57,19 +57,26 @@ cpan[1]> o conf init
 - Instalar cpanm
 
 ```bash
-cpan App::cpanminus
+sudo cpan App::cpanminus
 ```
 
-- Instalando servidor de lenguaje
+- Instalando servidor de lenguaje (para usar richterger.perl)
 
 Dependencias en Debian based
 
 ```bash
-sudo apt install libanyevent-perl libclass-refresh-perl libcompiler-lexer-perl libdata-dump-perl libio-aio-perl libjson-perl libmoose-perl libpadwalker-perl libscalar-list-utils-perl libcoro-perl
+sudo apt install libanyevent-perl libclass-refresh-perl libcompiler-lexer-perl libdata-dump-perl libio-aio-perl libjson-perl libmoose-perl libpadwalker-perl libscalar-list-utils-perlx libcoro-perl
 ```
 
 ```bash
-cpanm Perl::LanguageServer
+sudo cpanm Perl::LanguageServer
+```
+- En caso de tener problemas con Perl::ServerLanguage, una opción es usar bscan.perlnavigator
+
+Para algunas funcionalidades requiere Perl::Critic
+
+```
+sudo cpanm Perl::Critic
 ```
 
 ## Como usar Jupyter para Python y R
