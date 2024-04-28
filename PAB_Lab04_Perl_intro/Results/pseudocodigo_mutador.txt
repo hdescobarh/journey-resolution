@@ -1,0 +1,22 @@
+
+FUNCTION mutate_sequence(sequence, transversion_probability):
+    (location_index, location_nucleotide) <- choose_location_uniform(sequence)
+    new_nucleotide <- choose_mutation_multinomial(location_nucleotide, tranversion_probability)
+    sequence[location_index] <- new_nucleotide
+    RETURN sequence
+
+FUNCTION choose_location_uniform(sequence):
+    location_index <- random integer in the closed open interval [0, sequence lenght)
+    location_nucleotide <- sequence[location_index]
+    RETURN (location_index, location_nucleotide)
+
+FUNCTION choose_mutation_multinomial(old_nucleotide, tranversion_probability):
+    valid_substitutions <- empty dictionary
+    valid_substitutions["A"] <- ("G", "C", "T")
+    valid_substitutions["G"] <- ("A", "C", "T")
+    valid_substitutions["C"] <- ("T", "A", "G")
+    valid_substitutions["T"] <- ("C", "A", "G")
+
+    half_transition_probability <- (1 - transversion_probability) / 2
+    mutation_index <- choose randomly from {0, 1, 2} with probabilities (tranversion_probability, half_transition_probability, half_transition_probability)
+    RETURN valid_substitutions[old_nucleotide][mutatation_index]
