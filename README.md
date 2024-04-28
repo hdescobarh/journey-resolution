@@ -19,11 +19,17 @@ python -m pip install -r requirements.txt
 
 ### R
 
+- Es posible que toque instalar algunos paquetes necesarios para compilar código. Para debian based:
+
+```bash
+sudo apt-get install build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev
+```
+
 - Este paquete es necesario para usar las funcionalidades para R de VS Code
 
 ```R
-update.packages(ask=FALSE)
-install.packages("languageserver")
+update.packages(ask=FALSE) # puede requerir sudo para actualizar algunos paquetes
+install.packages("languageserver", dependencies=TRUE)
 ```
 
 - Kernel de R para Jupyter. Recordar tener instalado Jupyter en el entorno de Python
