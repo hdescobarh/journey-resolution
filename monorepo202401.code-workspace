@@ -68,7 +68,7 @@
     "python.testing.pytestEnabled": true,
     "perl.enable": true,
     "[perl]": {
-      "editor.defaultFormatter": "richterger.perl"
+      "editor.defaultFormatter": "bscan.perlnavigator"
     },
     "cSpell.language": "en, es",
     "cSpell.import": [
@@ -88,7 +88,7 @@
       "ms-toolsai.jupyter",
       "ms-python.vscode-pylance",
       "mechatroner.rainbow-csv",
-      "richterger.perl"
+      "bscan.perlnavigator"
     ],
     "unwantedRecommendations": []
   }
