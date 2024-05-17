@@ -56,6 +56,8 @@
   ],
   // words - list of words to be always considered correct
   "words": [
+    "Anisogénica",
+    "anisogénicas",
     "Bioinformática",
     "blastn",
     "blastp",
@@ -77,6 +79,9 @@
     "homocigoto",
     "homocigotos",
     "Isoform",
+    "isoformas",
+    "Isogénica",
+    "isogénicas",
     "lmer",
     "megablast",
     "multialélico",
