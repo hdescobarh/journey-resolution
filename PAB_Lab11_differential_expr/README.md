@@ -1,5 +1,11 @@
 # Bitácora personal de la practica
 
+Example
+
+```bash
+/Code/diff_expr_no_replicates.r "Private_Data/K562/K562.total.merged.txt" "Results"
+```
+
 ## Datos
 
 ### Datos RNA-seq de ENCODE/Cold Spring Harbor Lab (CSHL)
