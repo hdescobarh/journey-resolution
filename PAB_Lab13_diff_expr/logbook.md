@@ -15,4 +15,4 @@ Ejemplo:
 | hsa-mir-200b-3p | 6 | 8 | 6 | 7 | 11 | 22 | 14 | ... |
 | hsa-mir-200a-3p | 2 | 7 | 6 | 7 | 6 | 9 | 3 | ... |
 
-❗ En principio deberían ser 24 (2x4x3) columnas; sin embargo, la mayoría solo tiene 22, faltando M48R6 y M24R5. Tener en cuenta en caso de querer compararse entre archivos.
+❗ En principio deberían ser 24 (2x4x3) columnas; sin embargo, la mayoría solo tiene 22, faltando M48R6 y M24R5. Tener en cuenta en caso de querer compararse entre mapas.
