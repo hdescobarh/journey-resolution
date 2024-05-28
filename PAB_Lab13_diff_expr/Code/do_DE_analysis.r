@@ -7,12 +7,15 @@ args <- commandArgs(trailingOnly = TRUE)
 
 # Arguments validation
 
-if (length(args) < 2) {
+if (length(args) < 4) {
   stop("Need two arguments: input_file, output_directory.\n", call. = FALSE)
 }
 
 input_file_path <- args[1]
-output_directory_path <- args[2]
+data_unique_id <- args[2]
+normalization_methods <- args[3]
+output_directory_path <- args[4]
+
 
 if (!file.exists(input_file_path)) {
   stop(sprintf("Input file (%s) does not exist", input_file_path))
@@ -51,7 +54,7 @@ data <- read.table(
   file = input_file_path, header = TRUE, row.names = 1
 )
 
-# Table columns names verification
+# Table columns name verification
 
 pattern <- "[DM]\\d+R\\d+"
 
@@ -76,36 +79,10 @@ data <- DGEList(counts = data, samples = samples)
 ########################## ANALYSIS ##########################
 
 
-############ 1. Filtering
+############ 1. Set experiment design and contrasts
 
-# filtering keeps genes that have CPM >= CPM.cutoff in MinSampleSize samples,
-#   where CPM.cutoff = min.count/median(lib.size)*1e6 and MinSampleSize is the
-#   smallest group sample size or, more generally, the minimum inverse leverage
-#   computed from the design matrix.
-
-keep <- filterByExpr(data, group = group, min.count = 15)
-data <- data[keep, , keep.lib.sizes = FALSE]
-
-
-############ 2. Data Normalization
-
-# Calculate scaling factors to convert the raw library sizes for a
-#   set of sequenced samples into normalized effective library sizes.
-
-# method TMMwsp: This is a variant of TMM that is intended to have more stable
-#   performance when the counts have a high proportion of zeros.
-
-data_normalized <- normLibSizes(data, method = "TMMwsp")
-plotMDS(data_normalized, col = as.numeric(data_normalized$samples$treat))
-
-
-############ 3. Set experiment design and contrasts
-
-# define a coefficient for the expression level of each group
-
-design <- model.matrix(~ 0 + group, data = data_normalized$samples)
-colnames(design) <- levels(data_normalized$samples$group)
-
+design <- model.matrix(~ 0 + group, data = data$samples)
+colnames(design) <- levels(data$samples$group)
 
 my_contrasts <- makeContrasts(
   # Inside D
@@ -137,32 +114,55 @@ my_contrasts <- makeContrasts(
   levels = design
 )
 
+############ 2. Filtering
 
-############ 4. Dispersion estimation
+# keeps genes with CPM >= CPM.cutoff in MinSampleSize samples
+#   such that CPM.cutoff = min.count/median(lib.size)*1e6
 
-# Estimate Common, Trended and Tagwise Negative Binomial dispersions
-#   by weighted likelihood empirical Bayes
-data_normalized <- estimateDisp(data_normalized, design)
+keep <- filterByExpr(data, group = group, min.count = 200)
+data <- data[keep, , keep.lib.sizes = FALSE]
 
-cat("Common dispersion: ", data_normalized$common.dispersion, "\n")
-plotBCV(data_normalized)
-plotMeanVar(data_normalized, show.tagwise.vars = TRUE, NBline = TRUE)
-
-############ 5. Model fit
-
-# The QL F-test statistic reflects the uncertainty in the dispersion estimation
-#   for each gene and gives more control over type I error rate.
-
-fit <- glmQLFit(data_normalized)
-plotQLDisp(fit)
-
-# Heat map
-# The documentation suggest to use "moderated log-counts-per-million"
-# for drawing a head map of individual RNA-seq samples
+############ 3. Data Normalization & Dispersion estimation
 
 
-# get cpm log2 values using the fitted coefficients
-log_cpm <- cpm(fit, log = TRUE)
-heatmap(log_cpm, scale = "row", col = heat.colors(256))
+normalization_and_dispersion <- function(
+    non_normalized_data, normalization_method, design) {
+  # Calculate scaling factors for transforming
+  #   library sizes to effective library sizes
+  data_normalized <- normLibSizes(
+    non_normalized_data,
+    method = normalization_method
+  )
 
+  plotMDS(data_normalized, col = as.numeric(data_normalized$samples$treat))
+  # Estimates Common, Trended and Tagwise NB dispersions
+  data_normalized <- estimateDisp(data_normalized, design)
+  plotBCV(data_normalized)
+  plotMeanVar(data_normalized, show.tagwise.vars = TRUE, NBline = TRUE)
+  data_normalized
+}
+
+
+############ 4. Model fit
+
+
+
+model_fit <- function(data_normalized, contrasts) {
+  # The QL F-test's statistic reflects the uncertainty in the dispersion
+  #   estimation for each gene and gives more control over type I error rate.
+
+  fit <- glmQLFit(data_normalized)
+  plotQLDisp(fit)
+
+  # Heat map
+  # The documentation suggest to use "moderated log-counts-per-million"
+  # for drawing a head map of individual RNA-seq samples
+
+
+  # get cpm log2 values using the fitted coefficients
+  log_cpm <- cpm(fit, log = TRUE)
+  heatmap(log_cpm, scale = "row", col = heat.colors(256))
+
+  fit
+}
 ############ 6. differential expression tests
