@@ -34,7 +34,7 @@ if (!file.exists(input_file_path)) {
 }
 
 if (!dir.exists(output_directory_path)) {
-  dir.create(output_directory_path)
+  dir.create(output_directory_path, recursive = TRUE)
 }
 
 if (!all(normalization_methods %in% valid_methods)) {
