@@ -2,7 +2,7 @@
 
 missing_packages <- character()
 for (package in c(
-  "edgeR"
+  "edgeR", "limma"
 )) {
   if (!require(package, quietly = TRUE, character.only = TRUE)) {
     missing_packages <- append(missing_packages, package)
@@ -38,7 +38,7 @@ normalization_and_dispersion <- function(
       output_directory_path
     )
   )
-  edgeR::plotMDS(
+  limma::plotMDS(
     data_normalized,
     col = as.numeric(data_normalized$samples$treat)
   )
@@ -61,7 +61,7 @@ model_fit <- function(
   pdf(
     file = sprintf(
       "%s/dispersion_and_clustering.pdf",
-      output_directory_path,
+      output_directory_path
     )
   )
   edgeR::plotQLDisp(fit)
