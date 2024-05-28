@@ -4,25 +4,48 @@
 ########################## ENVIRONMENT SET UP ##########################
 
 args <- commandArgs(trailingOnly = TRUE)
+valid_methods <- c("TMM", "TMMwsp", "RLE", "upperquartile", "none")
 
 # Arguments validation
 
-if (length(args) < 4) {
-  stop("Need two arguments: input_file, output_directory.\n", call. = FALSE)
+if (length(args) < 3) {
+  stop(
+    sprintf(
+      "Needs three arguments:
+    - input_file_path: the expression counts file
+    - normalization_methods: a list of comma separated values from
+        %s.
+    - output_directory_path\n",
+      paste(valid_methods, collapse = ", ")
+    ),
+    call. = FALSE
+  )
 }
 
 input_file_path <- args[1]
-data_unique_id <- args[2]
-normalization_methods <- args[3]
-output_directory_path <- args[4]
+normalization_methods <- unlist(strsplit(args[2], split = "\\s*,\\s*"))
+output_directory_path <- args[3]
 
 
 if (!file.exists(input_file_path)) {
-  stop(sprintf("Input file (%s) does not exist", input_file_path))
+  stop(sprintf("Input file (%s) does not exist", input_file_path),
+    call. = FALSE
+  )
 }
 
 if (!dir.exists(output_directory_path)) {
   dir.create(output_directory_path)
+}
+
+if (!all(normalization_methods %in% valid_methods)) {
+  stop(
+    sprintf(
+      "normalization_methods must be a string of comma separated valid values.
+      Valid methods are:\n%s",
+      paste("\t-", valid_methods, collapse = "\n")
+    ),
+    call. = FALSE
+  )
 }
 
 # Load customized routines
@@ -102,3 +125,32 @@ my_contrasts <- makeContrasts(
 
 keep <- filterByExpr(data, group = group, min.count = 200)
 data <- data[keep, , keep.lib.sizes = FALSE]
+
+for (current_method in normalization_methods) {
+  current_output_dir <- paste(
+    output_directory_path, current_method,
+    sep = "/"
+  )
+
+  if (!dir.exists(current_output_dir)) {
+    dir.create(current_output_dir)
+  }
+
+  current_normalized <- normalization_and_dispersion(
+    non_normalized_data = data,
+    normalization_method = current_method,
+    design = design,
+    output_directory_path = current_output_dir
+  )
+
+  current_fit <- model_fit(
+    data_normalized = current_normalized,
+    output_directory_path = current_output_dir
+  )
+
+  test_models(
+    current_fit,
+    contrasts = my_contrasts,
+    output_directory_path = current_output_dir
+  )
+}
