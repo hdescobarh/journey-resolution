@@ -28,38 +28,55 @@ normalization_and_dispersion <- function(
     method = normalization_method
   )
 
+  # Estimates Common, Trended and Tagwise NB dispersions
+  data_normalized <- edgeR::estimateDisp(data_normalized, design)
+
+
+  pdf(
+    file = sprintf(
+      "%s/data_exploration.pdf",
+      output_directory_path
+    )
+  )
   edgeR::plotMDS(
     data_normalized,
     col = as.numeric(data_normalized$samples$treat)
   )
-  # Estimates Common, Trended and Tagwise NB dispersions
-  data_normalized <- edgeR::estimateDisp(data_normalized, design)
-  edgeR::plotBCV(data_normalized)
   edgeR::plotMeanVar(data_normalized, show.tagwise.vars = TRUE, NBline = TRUE)
+  edgeR::plotBCV(data_normalized)
+  dev.off()
+
   data_normalized
 }
 
 model_fit <- function(
-    data_normalized, normalization_method, contrasts, output_directory_path) {
+    data_normalized, output_directory_path) {
   # The QL F-test's statistic reflects the uncertainty in the dispersion
   #   estimation for each gene and gives more control over type I error rate.
-
   fit <- edgeR::glmQLFit(data_normalized)
+
+  # get cpm log2 values using the fitted coefficients
+  log_cpm <- edgeR::cpm(fit, log = TRUE)
+
+  pdf(
+    file = sprintf(
+      "%s/dispersion_and_clustering.pdf",
+      output_directory_path,
+    )
+  )
   edgeR::plotQLDisp(fit)
 
   # Heat map
   # The documentation suggest to use "moderated log-counts-per-million"
   # for drawing a head map of individual RNA-seq samples
-
-  # get cpm log2 values using the fitted coefficients
-  log_cpm <- edgeR::cpm(fit, log = TRUE)
   heatmap(log_cpm, scale = "row", col = heat.colors(256))
+  dev.off()
 
   fit
 }
 
 test_models <- function(
-    fit, normalization_method, contrasts, output_directory_path) {
+    fit, contrasts, output_directory_path) {
   for (current_contrast in colnames(contrasts)) {
     # Performs genewise quasi F-tests for the given contrast
     qlf_test <- edgeR::glmQLFTest(
