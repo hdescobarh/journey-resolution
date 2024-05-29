@@ -101,7 +101,7 @@ test_models <- function(
     # Make a mean-difference plot with smearing of points with very low counts
     # Highlight top FDR < 0.05
     fdr_threshold <- 0.05
-    top_selected_ids <- top$table[top$table$FDR < fdr_threshold, 1]
+    top_selected_ids <- rownames(top$table)[top$table$FDR < fdr_threshold]
 
     smear_file_name <- sprintf(
       "%s/smear_MDplot_%s.pdf",
