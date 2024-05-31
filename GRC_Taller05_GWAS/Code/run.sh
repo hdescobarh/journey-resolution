@@ -15,6 +15,6 @@ for CURRENT in "${COMPONENTS[@]}"; do
   rm -rf "$OUT"
   mkdir "$OUT"
   cd "$OUT" || exit
-  Rscript --vanilla "./gwas_mixed_linear.R" "$PHENOTYPE_FILE" "$HAPMAP_FILE" "$CURRENT" 2>&1 | tee "_script_report.txt"
+  Rscript --vanilla "../../$(dirname "$0")/gwas_mixed_linear.R" "../$PHENOTYPE_FILE" "../$HAPMAP_FILE" "$CURRENT" 2>&1 | tee "_script_report.txt"
   cd ..
 done
