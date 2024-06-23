@@ -3,7 +3,7 @@
 OUTPUT_DIR="../Results"
 HAPMAP_FILE="../Example_Data/GBS_150G.txt"
 PHENOTYPE_FILE="../Example_Data/pheno.txt"
-COMPONENTS=("3" "4" "6")
+COMPONENTS=("2" "3")
 
 # Use this script location as reference directory
 cd "$(dirname "$0")" || exit
