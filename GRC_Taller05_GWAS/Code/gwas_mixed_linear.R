@@ -78,6 +78,7 @@ to_export <- list.files(
     "*Association.Manhattan_Geno.MLM.*.pdf",
     "*Association.QQ.MLM.*.pdf",
     "GAPIT.Genotype.Kin_Zhang.pdf",
+    "GAPIT.Genotype.Distance_R_Chro.pdf",
     sep = "|"
   )
 )
