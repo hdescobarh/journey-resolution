@@ -4,7 +4,7 @@
 
 missing_packages <- character()
 for (package in c(
-  "GAPIT"
+  "GAPIT", "pdftools"
 )) {
   if (!require(package, quietly = TRUE, character.only = TRUE)) {
     missing_packages <- append(missing_packages, package)
@@ -67,6 +67,27 @@ output <- GAPIT(
   PCA.total = pca_components_number,
   model = c("MLM")
 )
+
+# GAPIT lacks good documentation. It is unclear how, if there is any way,
+# to save the plots in another format. I will get around it by converting
+# the PDF files
+
+to_export <- list.files(
+  ".",
+  paste(
+    "*Association.Manhattan_Geno.MLM.*.pdf",
+    "*Association.QQ.MLM.*.pdf",
+    "GAPIT.Genotype.Kin_Zhang.pdf",
+    sep = "|"
+  )
+)
+
+for (f in to_export) {
+  pdf_convert(
+    f,
+    page = 1,
+  )
+}
 
 warnings()
 
