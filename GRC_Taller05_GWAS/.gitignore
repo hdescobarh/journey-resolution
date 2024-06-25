@@ -1,1 +1,3 @@
-Results/
+Results/ncomponents_*/*
+!Results/ncomponents_*/*.png
+HTML_index/
