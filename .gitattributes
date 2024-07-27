@@ -49,8 +49,8 @@ yarn.lock linguist-vendored
 *.bibtex text diff=bibtex
 *.tex text diff=tex
 ## Data
-*.csv text eol=crlf
-*.tsv text eol=crlf
+*.csv text
+*.tsv text
 ## Simple text
 *.txt text
 *LICENSE* text
