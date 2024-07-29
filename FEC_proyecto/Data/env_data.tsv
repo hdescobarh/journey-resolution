@@ -1,0 +1,18 @@
+# Datos recolectados por estudiantes de la asignatura Fundamentos de ecología de comunidades (2026821)
+# en la reserva ecologica Parque Natural Maná Dulce, 16 de abril de 2024
+Sample	group	feopigmentos	"Chl a"	"Chl b"	"Chl c1,2"	carotenoides	mV	pH	ORP	"%OD"	OD_ppm	conductividad_muScm	conductividad	resistividad	TDS	PSU	temperature_celsius	profundidad_m	transparencia_cm
+CA1	Laguna	55.1	156.2	0.1	78.7	111.8	-29.9	8.40	244.8	0.0	0.00	82	87	0.0121	42	4.00	28.25	1.0	30.0
+CA2	Laguna	0.0	139.0	4.4	30.3	82.8	-13.2	8.11	252.4	9.8	0.71	77	84	0.0130	39	0.03	29.74	NA	NA
+CA3	Laguna	52.6	203.2	21.1	0.0	127.6	-6.7	8.01	229.0	3.0	0.16	76	83	0.0132	38	0.03	30.15	NA	NA
+CM1	Base	0.0	29.5	3.6	6.4	17.3	-26.5	8.33	-44.8	57.0	3.85	236	276	0.0043	118	0.11	33.90	NA	NA
+CM2	Base	34.8	33.9	9.1	19.5	17.8	35.0	8.47	52.2	36.0	2.30	243	289	0.0041	123	0.11	34.07	NA	NA
+CM3	Base	9.3	32.1	0.0	9.1	12.1	-30.1	8.74	102.3	44.6	2.98	255	297	0.0039	128	0.12	30.00	NA	NA
+CU1	Cueva	0.0	0.0	13.3	0.0	0.0	19.4	7.50	366.3	0.0	0.00	386	387	0.0026	193	0.18	25.13	0.3	27.0
+CU2	Cueva	0.0	3.2	1.9	9.7	1.3	14.0	7.84	89.0	0.0	0.00	223	223	0.0045	112	0.10	25.04	0.6	60.0
+CU3	Cueva	NA	NA	NA	NA	NA	18.0	7.54	208.0	0.0	0.00	382	381	0.0026	191	0.18	24.88	0.4	40.0
+RA1	Represa_A	0.0	25.9	2.8	10.0	4.7	26.4	7.38	77.1	0.0	0.00	315	322	0.0032	157	0.15	26.21	0.9	70.5
+RA2	Represa_A	0.0	26.7	5.6	9.4	7.0	3.0	7.80	76.4	0.0	0.00	3.17	327	0.0032	158	0.16	26.57	0.9	79.0
+RA3	Represa_A	5.3	32.8	0.8	4.5	9.5	8.2	7.20	141.0	0.0	0.00	313	322	0.0032	157	0.15	26.31	0.3	30.0
+RB1	Represa_B	NA	NA	NA	NA	NA	20.3	7.49	24.0	0.0	0.00	315	322	0.0030	165	0.16	25.22	1.0	55.5
+RB2	Represa_B	4.1	5.3	2.0	0.1	2.6	12.8	7.63	-12.1	0.0	0.00	330	331	0.0030	165	0.16	25.12	0.6	60.0
+RB3	Represa_B	NA	NA	NA	NA	NA	13.9	7.61	-29.0	0.0	0.00	326	328	0.0031	163	0.16	25.12	1.3	56.0
