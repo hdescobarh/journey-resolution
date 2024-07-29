@@ -108,6 +108,7 @@ Las primeras 2 o 3 letras de las carpetas indican la asignatura asociada.
 - GRC: Genética de Rasgos Complejos (2029263), 2024-01, Johana Carolina Soto Sedano
 - PAB: Programación y algoritmos para Bioinformática (2025439), 2024-01, Clara Isabel Bermudez Santana
 - FV: Fisiología vegetal (2017538), 2024-01, Hernán Mauricio Romero
+- FEC: Fundamentos de ecología de comunidades (2026821), Jose Ernesto Mancera Pineda
 
 ## Conexión a través de un proxy
 
