@@ -24,6 +24,20 @@ LightResponseCurveMM <- setRefClass(
   ),
   methods = list(
     initialize = function(A_max, K, R_d) {
+      # A_max, K > 0, R_d <= 0
+      if (A_max <= 0 || K <= 0 || R_d > 0) {
+        str_template <- c(
+          "At least one of the parameters is invalid:\n",
+          "A_max: %s\n",
+          "K: %s\n",
+          "R_d: %s\n",
+          "A_max, K must be positive. R_d must be non-positive."
+        )
+        stop(
+          sprintf(paste(str_template, collapse = ""), A_max, K, R_d),
+          call. = FALSE
+        )
+      }
       .self$A_max <- A_max
       .self$K <- K
       .self$R_d <- R_d
