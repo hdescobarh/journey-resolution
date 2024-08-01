@@ -164,7 +164,8 @@ light_response_curve_mm_nls <- function(data, QF_col, Photo_col) {
 
   list(
     LightResponseCurveMM = mm_curve,
-    nls_out
+    nls_model = nls_out$nls_model,
+    nls_parameters_summary = nls_out$nls_parameters_summary
   )
 }
 
