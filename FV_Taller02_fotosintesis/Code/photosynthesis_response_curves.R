@@ -187,7 +187,7 @@ rectangular_hyperbolic_nls <- function(data, QF_col, Photo_col) {
   if (curve_param[["R_d"]] > 0) {
     stop(
       sprintf(
-        "R_d value is non-negative: %.5f",
+        "Regression estimated a positive R_d value (%.5f). Check the data.",
         curve_param[["R_d"]]
       ),
       call. = FALSE
