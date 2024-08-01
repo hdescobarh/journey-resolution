@@ -158,8 +158,18 @@ light_response_curve_mm_nls <- function(data, QF_col, Photo_col) {
     control = nls.control(minFactor = 1 / 2048),
   )
 
-  # Create LightResponseCurveMM
+  # Some parameters validation
   curve_param <- coefficients(model)
+  if (curve_param[["R_d"]] > 0) {
+    stop(
+      sprintf(
+        "R_d value is non-negative: %.5f",
+        curve_param[["R_d"]]
+      ),
+      call. = FALSE
+    )
+  }
+  # Create LightResponseCurveMM
   mm_curve <- LightResponseCurveMM(
     A_max = curve_param[["A_max"]],
     K = curve_param[["K"]], R_d = curve_param[["R_d"]]
