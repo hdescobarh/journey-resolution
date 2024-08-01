@@ -139,6 +139,30 @@ LightResponseCurveMM <- setRefClass(
 #' @param QF_col integer indicating quantum flux column
 #' @param Photo_col integer indicating net photosynthesis column
 light_response_curve_mm_nls <- function(data, QF_col, Photo_col) {
+  nls_out <- rectangular_hyperbolic_nls(data, QF_col, Photo_col)
+  curve_param <- coefficients(nls_out[["nls_model"]])
+
+  # Create LightResponseCurveMM
+  mm_curve <- LightResponseCurveMM(
+    A_max = curve_param[["A_max"]],
+    K = curve_param[["K"]], R_d = curve_param[["R_d"]]
+  )
+
+  list(
+    LightResponseCurveMM = mm_curve,
+    nls_out
+  )
+}
+
+#' Performs a non-linear regression to fit a rectangular hyperbolic curve
+#'
+#' Uses the Gauss–Newton least squares method to fit a
+#' rectangular hyperbolic (Michaelis-Menten) curve
+#' @param data data.frame with quantum flux and net photosynthesis data
+#' @param QF_col integer indicating quantum flux column
+#' @param Photo_col integer indicating net photosynthesis column
+#' @return 'nls' class model
+rectangular_hyperbolic_nls <- function(data, QF_col, Photo_col) {
   colnames(data)[c(QF_col, Photo_col)] <- c("QF", "Photo")
 
   # Find initial values
@@ -169,11 +193,6 @@ light_response_curve_mm_nls <- function(data, QF_col, Photo_col) {
       call. = FALSE
     )
   }
-  # Create LightResponseCurveMM
-  mm_curve <- LightResponseCurveMM(
-    A_max = curve_param[["A_max"]],
-    K = curve_param[["K"]], R_d = curve_param[["R_d"]]
-  )
 
   # Describe model
   model_summary <- summary(model)
@@ -189,7 +208,6 @@ light_response_curve_mm_nls <- function(data, QF_col, Photo_col) {
   )
 
   list(
-    LightResponseCurveMM = mm_curve,
     nls_model = model, nls_parameters_summary = model_parameters
   )
 }
