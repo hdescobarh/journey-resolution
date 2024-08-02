@@ -181,20 +181,50 @@ rectangular_hyperbolic_nls <- function(data, QF_col, Photo_col) {
   colnames(data)[c(QF_col, Photo_col)] <- c("QF", "Photo")
 
   # Find initial values
-  A_max <- max(data$Photo)
-  A_max_half <- A_max / 2
+  A_max_guess <- max(data$Photo)
+  A_max_half <- A_max_guess / 2
   distances <- sapply(data$Photo, function(x) abs(x - A_max_half))
-  K <- data$QF[distances == min(distances)]
-  R_d <- min(data$Photo)
+  K_guess <- data$QF[distances == min(distances)]
+  R_d_guess <- min(data$Photo)
 
-  # Perform regression
+  # Get better initial estimates
+  initial_model <- nls(
+    Photo ~ ((A_max * QF) / (K + QF)) + R_d,
+    data,
+    start = list(
+      A_max = A_max_guess, K = K_guess, R_d = R_d_guess
+    ),
+
+    # Small QF are relevant to capture dark respiration
+    # and max quantum yield; so, this is represented by 1 / QF^2,
+    # QF + 1 is to avoid Inf values at QF = 0
+    # In addition, I want to give a decent weight to saturating QF values
+    # w(x), with a > 1 function has:
+    #   lim x-> +Inf w(x) = (0.5 / a^2) + 0.00001
+    #   min(w(x)) = 1x10^-5 at x = a - 1
+    weights = (-log(sqrt(exp(1)) * (QF + 1) / K_guess) / (QF + 1)^2)
+    + (0.5 / K_guess^2) + 0.00001
+  )
+  starting_values <- coefficients(initial_model)
+
+  # Get a better model, bound R_d to have respiration (the plant is C3)
   model <- nls(
     Photo ~ ((A_max * QF) / (K + QF)) + R_d,
     data,
     start = list(
-      A_max = A_max, K = K, R_d = R_d
+      A_max = starting_values[["A_max"]],
+      K = starting_values[["K"]],
+      R_d = starting_values[["R_d"]]
     ),
-    control = nls.control(minFactor = 1 / 2048),
+    control = nls.control(
+      maxiter = 1000, minFactor = 1 / 2048, scaleOffset = 1
+    ),
+    algorithm = "port",
+    upper = c(
+      Inf, Inf,
+      max(starting_values[["R_d"]], R_d_guess)
+    ),
+    lower = c(0, 0, -Inf)
   )
 
   # Some parameters validation
