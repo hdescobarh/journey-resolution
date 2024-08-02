@@ -295,7 +295,7 @@ lr_parameters_by_sample <- function(data, treatment_index) {
   all_treatments <- transform(
     all_treatments,
     Treatment = as.factor(Treatment), Sample = as.factor(Sample),
-    D_r = abs(R_d)
+    D_r = -1 * R_d
   )
 
   all_treatments <- subset(all_treatments,
