@@ -1,6 +1,9 @@
 # author: hdescobarh
 
 library("methods")
+library("ggplot2")
+library("cowplot")
+library("gtable")
 
 # Rectangular hyperbolic (Michaelis-Menten) model for light response curve
 #
@@ -255,4 +258,211 @@ rectangular_hyperbolic_nls <- function(data, QF_col, Photo_col) {
   list(
     nls_model = model, nls_parameters_summary = model_parameters
   )
+}
+
+#' Get photosynthesis light-response curve parameters by each experimental unit
+#'
+#' @param data Data frame with QF and Photo for each sample and treatment
+#' @param treatment_index Index of the column with the treatment groups names
+lr_parameters_by_sample <- function(data, treatment_index) {
+  all_treatments <- data.frame()
+  for (t in levels(data[, treatment_index])) {
+    for (s in levels(data$Sample)) {
+      current_data <- data[
+        (data[, treatment_index] == t) & (data$Sample == s),
+      ]
+      cat(
+        "Treatment", t,
+        "x Sample", s,
+        "Starting.."
+      )
+      model <- light_response_curve_mm_nls(
+        data = current_data,
+        QF_col = 3, Photo_col = 4
+      )
+
+      curve_parameters <- model$LightResponseCurveMM$to_list()
+      all_treatments <- rbind(
+        all_treatments,
+        c(Treatment = (t), Sample = (s), curve_parameters)
+      )
+      cat("Done!\n\n")
+    }
+  }
+
+  all_treatments <- transform(
+    all_treatments,
+    Treatment = as.factor(Treatment), Sample = as.factor(Sample),
+    D_r = abs(R_d)
+  )
+
+  all_treatments <- subset(all_treatments,
+    select = -c(
+      which(colnames(all_treatments) == "R_d")
+    )
+  )
+  all_treatments
+}
+
+#' Get some descriptive statistics for each treatment group
+lr_summary_by_treatment <- function(sample_parameters) {
+  # Get statistics
+  descriptive <- by(
+    sample_parameters, sample_parameters[, "Treatment"],
+    function(x) {
+      param_names <- c("A_max", "K", "D_r", "LCP", "Phi")
+      all <- vector(mode = "list", length = 2 * length(param_names))
+      mean_str <- ".mean"
+      std_error_str <- ".stdErr"
+      names(all) <- paste(param_names,
+        rep(c(mean_str, std_error_str), 5),
+        sep = ""
+      )
+      for (parameter in param_names) {
+        all[[paste(
+          parameter, mean_str,
+          sep = ""
+        )]] <- mean(x[, parameter])
+        all[[paste(
+          parameter, std_error_str,
+          sep = ""
+        )]] <- sd(x[, parameter]) / sqrt(length(x[, parameter]))
+      }
+      all
+    }
+  )
+
+  # add statistics to a data.frame
+  descriptive_df <- data.frame()
+  for (treatment in names(descriptive)) {
+    descriptive_df <- rbind(
+      descriptive_df,
+      as.data.frame(descriptive[[treatment]], row.names = treatment)
+    )
+  }
+  # Sort by treatments
+  descriptive_df <- descriptive_df[
+    order(row.names(descriptive_df), decreasing = TRUE),
+  ]
+  # Sort columns
+  descriptive_df <- descriptive_df[
+    with(descriptive_df, order(colnames(descriptive_df)))
+  ]
+
+  descriptive_df
+}
+
+#' Plot light-response curves by treatment group
+#'
+#' @param descriptive_df and data.frame output from lr_summary_by_treatment
+#' @param max_qf numeric maximum value of quantum flux to plot
+#' @param legend_title string to put in legend's title
+lr_groups_plot <- function(descriptive_df, max_qf, legend_title) {
+  # Generate light-response curves from estimated treatment group parameters
+  theoretical_curves <- data.frame()
+
+  for (treatment in rownames(descriptive_df)) {
+    lr_curve <- LightResponseCurveMM(
+      A_max = descriptive_df[treatment, "A_max.mean"],
+      K = descriptive_df[treatment, "K.mean"],
+      R_d = -descriptive_df[treatment, "D_r.mean"]
+    )
+    theoretical_curve <- lr_curve$theoretical_curve[
+      lr_curve$theoretical_curve$QF <= max_qf,
+    ]
+    theoretical_curve$Treatment <- treatment
+    theoretical_curves <- rbind(theoretical_curves, theoretical_curve)
+  }
+
+  # plot them
+  ggplot(
+    theoretical_curves,
+    aes(x = QF, y = Photo, group = Treatment, color = Treatment)
+  ) +
+    geom_line() +
+    geom_hline(
+      yintercept = 0,
+      color = "#5f5f5f", linetype = "solid"
+    ) +
+    labs(colour = legend_title) +
+    theme(aspect.ratio = 0.5) +
+    labs(
+      x = expression("PPFD (" * mu * mol ~ m^{
+        -2
+      } ~ s^
+        {
+          -1
+        } * ")"),
+      y = expression("Fotosíntesis neta" ~ "(" * mu * mol ~ m^{
+        -2
+      } ~ s^
+        {
+          -1
+        } * ")")
+    ) +
+    scale_y_continuous(
+      breaks = sort(
+        c(
+          seq(
+            round(min(theoretical_curves$Photo), 2),
+            max(theoretical_curves$Photo),
+            2
+          ),
+          0,
+          round(max(theoretical_curves$Photo), 2)
+        )
+      )
+    ) +
+    scale_x_continuous(
+      breaks = seq(
+        0,
+        max_qf,
+        100
+      )
+    )
+}
+
+
+#' Basic boxplot including all light response parameters
+all_parameters_boxplot <- function(sample_lr_parameters) {
+  param_names <- colnames(sample_lr_parameters)[
+    which(!colnames(sample_lr_parameters) %in% c("Treatment", "Sample"))
+  ]
+
+  plots <- vector(mode = "list", length = length(param_names))
+  names(plots) <- param_names
+  for (param in param_names) {
+    current_plot <- ggplot(sample_lr_parameters) +
+      geom_boxplot(
+        aes(
+          x = .data[["Treatment"]],
+          y = .data[[param]],
+          fill = .data[["Treatment"]]
+        )
+      ) +
+      theme(
+        legend.position = "none",
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        plot.margin = unit(c(20, 5, 0, 0), "pt")
+      )
+    plots[[param]] <- current_plot
+  }
+
+  without_legend <- plot_grid(
+    plotlist = plots,
+    align = "hv", ncol = 3
+    # labels = param_names
+  )
+
+  legend <- gtable_filter(
+    ggplot_gtable(
+      ggplot_build(plots[[1]] + theme(
+        legend.position = "bottom",
+        plot.margin = unit(c(0, 0, 0, 0), "pt")
+      ))
+    ), "guide-box"
+  )
+  plot_grid(without_legend, legend, ncol = 1, rel_heights = c(1, .2))
 }
