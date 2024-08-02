@@ -4,6 +4,8 @@ library("methods")
 library("ggplot2")
 library("cowplot")
 library("gtable")
+library("multcomp")
+
 
 # Rectangular hyperbolic (Michaelis-Menten) model for light response curve
 #
@@ -465,4 +467,70 @@ all_parameters_boxplot <- function(sample_lr_parameters) {
     ), "guide-box"
   )
   plot_grid(without_legend, legend, ncol = 1, rel_heights = c(1, .2))
+}
+
+
+#' unequal variance anova
+#'
+#' @param sample_lr_parameters output from lr_parameters_by_sample
+differences_all_treatments <- function(sample_lr_parameters) {
+  lr_parameters <- colnames(sample_lr_parameters)[
+    which(!colnames(sample_lr_parameters) %in% c("Treatment", "Sample"))
+  ]
+  anova_pvalues <- vector(mode = "list", length = length(lr_parameters))
+  names(anova_pvalues) <- lr_parameters
+
+  for (response in lr_parameters) {
+    cat("### Checking ", response, ":\n")
+    anova <- oneway.test(
+      as.formula(paste(response, "~", "Treatment")),
+      data = sample_lr_parameters,
+      var.equal = FALSE
+    )
+    anova_pvalues[[response]] <- anova$p.value
+    print(anova)
+  }
+  out <- as.data.frame(anova_pvalues)
+  out$Comparison <- "All"
+  out
+}
+
+#' post hoc test to identify which groups have differences
+#'
+#' @param sample_lr_parameters output from lr_parameters_by_sample
+differences_among_treatments <- function(sample_lr_parameters) {
+  lr_parameters <- colnames(sample_lr_parameters)[
+    which(!colnames(sample_lr_parameters) %in% c("Treatment", "Sample"))
+  ]
+
+  df <- data.frame()
+
+  for (response in lr_parameters) {
+    cat("### Checking ", response, ":\n")
+
+    # Prepare model
+    amod <- aov(
+      as.formula(paste(response, "~", "Treatment")),
+      data = sample_lr_parameters,
+    )
+    # Tukey's post-hoc test
+    post_test <- glht(
+      amod,
+      linfct = mcp(Treatment = "Tukey")
+    )
+    post_summary <- summary(post_test)
+    print(post_summary)
+    out <- data.frame(
+      names(post_summary$test$tstat),
+      post_summary$test$pvalues
+    )
+    colnames(out) <- c("Comparison", response)
+
+    if (length(df) == 0) {
+      df <- out
+    } else {
+      df <- merge(df, out, by = "Comparison")
+    }
+  }
+  df
 }
