@@ -444,7 +444,14 @@ lr_groups_plot <- function(
 
 
 #' Basic boxplot including all light response parameters
-all_parameters_boxplot <- function(sample_lr_parameters) {
+#'
+#' @param sample_lr_parameters output from lr_parameters_by_sample
+#' @param legend_title string to put in legend's title
+#' @param parameters_labels a named list indicating the y label
+all_parameters_boxplot <- function(
+    sample_lr_parameters,
+    legend_title,
+    parameter_labels) {
   param_names <- colnames(sample_lr_parameters)[
     which(!colnames(sample_lr_parameters) %in% c("Treatment", "Sample"))
   ]
@@ -452,6 +459,12 @@ all_parameters_boxplot <- function(sample_lr_parameters) {
   plots <- vector(mode = "list", length = length(param_names))
   names(plots) <- param_names
   for (param in param_names) {
+    if (param %in% names(parameter_labels)) {
+      current_y_label <- parameter_labels[[param]]
+    } else {
+      current_y_label <- param
+    }
+
     current_plot <- ggplot(sample_lr_parameters) +
       geom_boxplot(
         aes(
@@ -465,8 +478,9 @@ all_parameters_boxplot <- function(sample_lr_parameters) {
         axis.title.x = element_blank(),
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
-        plot.margin = unit(c(20, 5, 0, 0), "pt")
-      )
+        plot.margin = unit(c(20, 15, 0, 0), "pt")
+      ) +
+      labs(y = current_y_label)
     plots[[param]] <- current_plot
   }
 
@@ -481,7 +495,8 @@ all_parameters_boxplot <- function(sample_lr_parameters) {
       ggplot_build(plots[[1]] + theme(
         legend.position = "bottom",
         plot.margin = unit(c(0, 0, 0, 0), "pt")
-      ))
+      ) +
+        labs(fill = legend_title))
     ), "guide-box"
   )
   plot_grid(without_legend, legend, ncol = 1, rel_heights = c(1, .2))
