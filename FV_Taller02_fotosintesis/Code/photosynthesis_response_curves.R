@@ -388,6 +388,7 @@ lr_groups_plot <- function(descriptive_df, max_qf, legend_title) {
     ) +
     labs(colour = legend_title) +
     theme(aspect.ratio = 0.5) +
+    guides(x = guide_axis(angle = 45)) +
     labs(
       x = expression("PPFD (" * mu * mol ~ m^{
         -2
@@ -406,19 +407,18 @@ lr_groups_plot <- function(descriptive_df, max_qf, legend_title) {
       breaks = sort(
         c(
           seq(
-            round(min(theoretical_curves$Photo), 2),
-            max(theoretical_curves$Photo),
+            floor(min(theoretical_curves$Photo)),
+            ceiling(max(theoretical_curves$Photo)) + 1,
             2
           ),
-          0,
-          round(max(theoretical_curves$Photo), 2)
+          0
         )
       )
     ) +
     scale_x_continuous(
       breaks = seq(
         0,
-        max_qf,
+        ceiling(max_qf),
         100
       )
     )
