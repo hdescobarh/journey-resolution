@@ -359,7 +359,11 @@ lr_summary_by_treatment <- function(sample_parameters) {
 #' @param descriptive_df and data.frame output from lr_summary_by_treatment
 #' @param max_qf numeric maximum value of quantum flux to plot
 #' @param legend_title string to put in legend's title
-lr_groups_plot <- function(descriptive_df, max_qf, legend_title) {
+#' @param group_summary data.frame with columns Treatment, QF for
+#' mean quantum flux; and Photo and Photo_SE for net photosynthesis mean
+#' and  standard error
+lr_groups_plot <- function(
+    descriptive_df, max_qf, legend_title, group_summary = NULL) {
   # Generate light-response curves from estimated treatment group parameters
   theoretical_curves <- data.frame()
 
@@ -377,7 +381,7 @@ lr_groups_plot <- function(descriptive_df, max_qf, legend_title) {
   }
 
   # plot them
-  ggplot(
+  plt <- ggplot(
     theoretical_curves,
     aes(x = QF, y = Photo, group = Treatment, color = Treatment)
   ) +
@@ -422,6 +426,20 @@ lr_groups_plot <- function(descriptive_df, max_qf, legend_title) {
         100
       )
     )
+
+  if (is.null(group_summary)) {
+    plt
+  } else {
+    plt +
+      geom_point(
+        data = group_summary,
+        mapping = aes(x = QF, y = Photo, group = Treatment)
+      ) +
+      geom_errorbar(
+        data = group_summary, width = 25, alpha = 0.8,
+        aes(ymin = Photo - Photo_SE, ymax = Photo + Photo_SE),
+      )
+  }
 }
 
 
@@ -530,6 +548,33 @@ differences_among_treatments <- function(sample_lr_parameters) {
       df <- out
     } else {
       df <- merge(df, out, by = "Comparison")
+    }
+  }
+  df
+}
+
+#' Get the group mean QF, Photo, and Photo standard error
+#'
+#' By each group get mean quantum flux; and the net photosynthesis's
+#' mean and standard error
+#' @param data Data frame with QF and Photo for each sample and treatment
+#' @param treatment_index Index of the column with the treatment groups names
+summary_replicates <- function(data, treatment_index) {
+  colnames(data)[treatment_index] <- "Treatment"
+  df <- data.frame()
+  for (treatment in levels(data[, "Treatment"])) {
+    for (qf in levels(data[, "QF_class"])) {
+      current <- data[
+        (data[, "Treatment"] == treatment) & (data[, "QF_class"] == qf),
+      ]
+      df <- rbind(
+        df, list(
+          Treatment = treatment,
+          QF = mean(current$QF),
+          Photo = mean(current$Photo),
+          Photo_SE = sd(current$Photo) / sqrt(length(current$Photo))
+        )
+      )
     }
   }
   df
