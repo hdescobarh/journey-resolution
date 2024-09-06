@@ -276,3 +276,59 @@ extract_observations <- function(
   }
   observations_df
 }
+
+#' Generate points to draw the derivative of the four parameters Hill function
+#'
+#' @param max_time upper bound x to plot
+#' @param a asymptote
+#' @param b parameter controlling the shape and steepness of the curve
+#' @param c time required for 50% of viable seeds to germinate
+#' @param y0 intercept on the y axis
+#' @param time_step get a point each time_step
+get_derivative_hill_points <- function(max_time, a, b, c, y0, time_step) {
+  xs <- seq(1, max_time, time_step)
+  ys <- sapply(
+    xs,
+    function(x, a, b, c) {
+      c_power_b <- c^b
+      (a * b * c_power_b * x^(b - 1)) / (c_power_b + x^b)^2
+    },
+    a = a, b = b, c = c
+  )
+  data.frame(time = xs, derivative = ys)
+}
+
+#' From the output of summarize_fits generate a list of data.frame
+#' containing the points to plot the derivative of the
+#' Hill's four-parameter curve. Be aware that values are percentage values.
+#'
+#' @param fits_summary
+#' @param max_time upper bound x to plot
+#' @param time_step get a point each time_step
+#' @param mean_suffix  suffix for name of column Mean
+#' @param std_err_suffix suffix for name of column Standard Error
+generate_derivative_curves <- function(
+    fits_summary, max_time, time_step = 0.1,
+    mean_suffix = ".Mean", std_err_suffix = ".StdError") {
+  curves_df <- data.frame()
+  for (treatment in levels(fits_summary$Treatment)) {
+    current_curve <- get_derivative_hill_points(
+      max_time = max_time,
+      a = fits_summary[treatment, paste("a", mean_suffix, sep = "")],
+      b = fits_summary[treatment, paste("b", mean_suffix, sep = "")],
+      c = fits_summary[treatment, paste("c", mean_suffix, sep = "")],
+      time_step = time_step
+    )
+
+    curve <- cbind(
+      data.frame(
+        Treatment = rep(treatment, nrow(current_curve)),
+        stringsAsFactors = TRUE
+      ),
+      current_curve
+    )
+
+    curves_df <- rbind(curves_df, curve)
+  }
+  curves_df
+}
