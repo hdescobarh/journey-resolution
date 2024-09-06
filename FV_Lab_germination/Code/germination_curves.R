@@ -203,7 +203,7 @@ get_hill_points <- function(max_time, a, b, c, y0, time_step) {
     },
     a = a, b = b, c = c, y0 = y0
   )
-  data.frame(day = xs, germination_percent = ys)
+  data.frame(time = xs, germination_percent = ys)
 }
 
 #' From the output of summarize_fits generate a list of data.frame
@@ -266,7 +266,7 @@ extract_observations <- function(
   for (treatment in levels(fits_summary$Treatment)) {
     current_obs <- data.frame(
       Treatment = rep(treatment, length(time_intervals)),
-      day = time_intervals,
+      time = time_intervals,
       germination_percent = unname(t(fits_summary[treatment, mean_keys])[, 1]),
       stdError = unname(t(fits_summary[treatment, std_err_keys])[, 1]),
       stringsAsFactors = TRUE
