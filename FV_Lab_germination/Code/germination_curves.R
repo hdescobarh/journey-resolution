@@ -91,3 +91,87 @@ plot_by_treatment <- function(fits, treatment) {
 
   final_plot
 }
+
+#' Get parameters of interest and cumulative percent time interval counts
+#' from fits
+#'
+#' @param fits Output from germinationmetrics::FourPHFfit.bulk.
+#' @param param_names Character vector of curve parameters to keep
+#' @param time_interval_names Character vector of names of each time interval
+#' @param time_interval Numeric vector of values of time intervals
+#'
+get_from_fits <- function(
+    fits, param_names, time_interval_names, time_intervals) {
+  if (length(time_interval_names) != length(time_intervals)) {
+    stop("time_interval_names and time_intervals must have the same length")
+  }
+
+  # Get cumulative percent
+  cumulative_percent <- apply(
+    fits[, c(time_interval_names, "Total_Seeds")], 1,
+    function(x) {
+      output <- c()
+      for (i in seq_along(time_interval_names)) {
+        percent_germination <- 100 * sum(x[1:i]) / x[["Total_Seeds"]]
+        output <- c(output, percent_germination)
+      }
+      output
+    }
+  )
+  cumulative_percent <- t(cumulative_percent)
+  colnames(cumulative_percent) <- paste("C", time_intervals, sep = "")
+
+  # Recover from parameters to keep
+  final_df <- fits[c("Treatment", "Replicate", param_names)]
+  for (param in param_names) {
+    final_df[[param]] <- as.numeric(final_df[[param]])
+  }
+
+  # Combine
+  final_df <- cbind(final_df, cumulative_percent)
+  final_df
+}
+
+#' Gets Mean and Standard Error by Treatment and column
+#'
+#' @param to_summarize data.frame
+#' @param cols_to_exclude character vector with names of columns to ignore
+#' @param mean_suffix  suffix for name of column Mean
+#' @param std_err_suffix suffix for name of column Standard Error
+summarize_fits <- function(
+    to_summarize, cols_to_exclude,
+    mean_suffix = ".Mean", std_err_suffix = ".StdError") {
+  col_names <- names(
+    to_summarize
+  )[!(names(to_summarize) %in% cols_to_exclude)]
+
+  fit_summary <- data.frame()
+
+  for (treatment in levels(to_summarize$Treatment)) {
+    # Prepare the list to store statistics
+    treatment_summary <- list()
+
+    # Get treatment rows
+    treatment_sub_df <- to_summarize[to_summarize == treatment, ]
+    treatment_sample_size <- nrow(treatment_sub_df)
+
+    for (current_col in col_names) {
+      mean_key <- paste(current_col, mean_suffix, sep = "")
+      treatment_summary[[mean_key]] <- mean(treatment_sub_df[[current_col]])
+
+      std_err_key <- paste(current_col, std_err_suffix, sep = "")
+      treatment_summary[[std_err_key]] <- sd(
+        treatment_sub_df[[current_col]]
+      ) / sqrt(treatment_sample_size)
+    }
+
+    treatment_summary_row <- cbind(
+      data.frame(Treatment = treatment, stringsAsFactors = TRUE),
+      as.data.frame(treatment_summary)
+    )
+
+    fit_summary <- rbind(fit_summary, treatment_summary_row)
+    rownames(fit_summary) <- fit_summary[, 1]
+  }
+  fit_summary
+}
