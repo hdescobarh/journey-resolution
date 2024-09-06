@@ -175,3 +175,24 @@ summarize_fits <- function(
   }
   fit_summary
 }
+
+#' Generate points to draw a four parameters Hill function
+#'
+#' @param max_time upper bound x to plot
+#' @param a asymptote
+#' @param b parameter controlling the shape and steepness of the curve
+#' @param c time required for 50% of viable seeds to germinate
+#' @param y0 intercept on the y axis
+#' @param time_step get a point each time_step
+get_hill_points <- function(max_time, a, b, c, y0, time_step) {
+  xs <- seq(1, max_time, time_step)
+  ys <- sapply(
+    xs,
+    function(x, a, b, c, y0) {
+      x_power_b <- x^b
+      y0 + (a * x_power_b) / (c^b + x_power_b)
+    },
+    a = a, b = b, c = c, y0 = y0
+  )
+  data.frame(day = xs, germination_percent = ys)
+}
