@@ -196,3 +196,74 @@ get_hill_points <- function(max_time, a, b, c, y0, time_step) {
   )
   data.frame(day = xs, germination_percent = ys)
 }
+
+#' From the output of summarize_fits generate a list of data.frame
+#' containing the points to plot
+#'
+#' @param fits_summary
+#' @param max_time upper bound x to plot
+#' @param time_step get a point each time_step
+#' @param mean_suffix  suffix for name of column Mean
+#' @param std_err_suffix suffix for name of column Standard Error
+generate_hill_curves <- function(
+    fits_summary, max_time, time_step = 0.1,
+    mean_suffix = ".Mean", std_err_suffix = ".StdError") {
+  curves_df <- data.frame()
+  for (treatment in levels(fits_summary$Treatment)) {
+    current_curve <- get_hill_points(
+      max_time = max_time,
+      a = fits_summary[treatment, paste("a", mean_suffix, sep = "")],
+      b = fits_summary[treatment, paste("b", mean_suffix, sep = "")],
+      c = fits_summary[treatment, paste("c", mean_suffix, sep = "")],
+      y0 = fits_summary[treatment, paste("y0", mean_suffix, sep = "")],
+      time_step = time_step
+    )
+
+    curve <- cbind(
+      data.frame(
+        Treatment = rep(treatment, nrow(current_curve)),
+        stringsAsFactors = TRUE
+      ),
+      current_curve
+    )
+
+    curves_df <- rbind(curves_df, curve)
+  }
+  curves_df
+}
+
+#' From a summary of get_from_fits take cumulative percent observations
+#' and their Standard Errors
+#'
+#' @param fits_summary
+#' @param time_interval Numeric vector of values of time intervals
+#' @param cumulative_prefix  prefix for name of cumulative percent at each time
+#' @param mean_suffix  suffix for name of column Mean
+#' @param std_err_suffix suffix for name of column Standard Error
+extract_observations <- function(
+    fits_summary,
+    time_intervals,
+    cumulative_prefix = "C",
+    mean_suffix = ".Mean", std_err_suffix = ".StdError") {
+  mean_keys <- paste(
+    cumulative_prefix, time_intervals, mean_suffix,
+    sep = ""
+  )
+  std_err_keys <- paste(
+    cumulative_prefix, time_intervals, std_err_suffix,
+    sep = ""
+  )
+  observations_df <- data.frame()
+  for (treatment in levels(fits_summary$Treatment)) {
+    current_obs <- data.frame(
+      Treatment = rep(treatment, length(time_intervals)),
+      day = time_intervals,
+      germination_percent = unname(t(fits_summary[treatment, mean_keys])[, 1]),
+      stdError = unname(t(fits_summary[treatment, std_err_keys])[, 1]),
+      stringsAsFactors = TRUE
+    )
+
+    observations_df <- rbind(observations_df, current_obs)
+  }
+  observations_df
+}
