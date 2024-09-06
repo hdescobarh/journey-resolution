@@ -99,11 +99,17 @@ plot_by_treatment <- function(fits, treatment) {
 #' @param param_names Character vector of curve parameters to keep
 #' @param time_interval_names Character vector of names of each time interval
 #' @param time_interval Numeric vector of values of time intervals
+#' @param cumulative_prefix  prefix for name of cumulative percent at each time
 #'
 get_from_fits <- function(
-    fits, param_names, time_interval_names, time_intervals) {
+    fits, param_names = c("a", "b", "c", "y0"), time_interval_names,
+    time_intervals, cumulative_prefix = "C") {
   if (length(time_interval_names) != length(time_intervals)) {
     stop("time_interval_names and time_intervals must have the same length")
+  }
+
+  if (!all(c("a", "b", "c", "y0") %in% param_names)) {
+    stop("param_names must contain a, b, c and y0 parameters")
   }
 
   # Get cumulative percent
@@ -119,7 +125,10 @@ get_from_fits <- function(
     }
   )
   cumulative_percent <- t(cumulative_percent)
-  colnames(cumulative_percent) <- paste("C", time_intervals, sep = "")
+  colnames(cumulative_percent) <- paste(
+    cumulative_prefix, time_intervals,
+    sep = ""
+  )
 
   # Recover from parameters to keep
   final_df <- fits[c("Treatment", "Replicate", param_names)]
