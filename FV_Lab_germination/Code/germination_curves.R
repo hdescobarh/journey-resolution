@@ -40,13 +40,13 @@ options(repr.plot.width = plot_base_width)
 
 
 
-#' Plots multiple four-parameter hill function fitted cumulative
-#' germination curves filtered by a Treatment column
+#' Uses germinationmetrics::plot.FourPHFfit.bulk to make plots
+#' filtered by Treatment
 #'
 #' @param fits Output from germinationmetrics::FourPHFfit.bulk.
 #' must have a Treatment column
 #' @param treatment A single treatment
-plot_by_treatment <- function(fits, treatment) {
+raw_plot_by_treatment <- function(fits, treatment) {
   cumulative_plot <- plot(
     fits[fits$Treatment == treatment, ],
     group.col = "Replicate", rog = FALSE, show.points = TRUE
