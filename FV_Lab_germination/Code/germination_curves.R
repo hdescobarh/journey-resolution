@@ -5,6 +5,7 @@
 missing_packages <- character()
 for (package in c(
   "ggplot2", "cowplot", "scales", "gtable",
+  "multcomp",
   "germinationmetrics"
 )) {
   if (!require(package, quietly = TRUE, character.only = TRUE)) {
@@ -574,4 +575,26 @@ all_comparisons_plot <- function(
     )
 
   final_plot
+}
+
+#' Performs a one-way ANOVA followed by a post-hoc Tukey's test
+#'
+#' @param fitted_df data.frame with Treatment, Replicates and
+#' parameters obtained from a fitted four-parameters Hill function
+#' @param response parameter to which apply tests
+treatments_differences <- function(fitted_df, response) {
+  # One way
+  anova_model <- aov(
+    as.formula(paste(response, "~", "Treatment")),
+    data = fitted_df,
+  )
+  anova_output <- anova_model
+  # Tukey's
+  post_hoc_test <- glht(
+    anova_model,
+    linfct = mcp(Treatment = "Tukey")
+  )
+  tukey_output <- post_hoc_test
+
+  list(anova = anova_output, Tukey = tukey_output)
 }
