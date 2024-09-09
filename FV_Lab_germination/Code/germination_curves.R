@@ -533,6 +533,15 @@ all_comparisons_plot <- function(
     all_plots[[paste(current_name, "_density", sep = "")]] <- density_plot
   }
 
+  # Remove x axis title from all except the last two
+  # remember that all_plots has even length
+  if (length(all_plots) >= 4) {
+    last_index <- length(all_plots) - 2
+    for (i in 1:last_index) {
+      all_plots[[i]] <- all_plots[[i]] + theme(axis.title.x = element_blank())
+    }
+  }
+
   # Make a grid with all the plots
   without_legend <- plot_grid(
     plotlist = all_plots,
