@@ -173,3 +173,44 @@ filter_models <- function(tested_models, model_name) {
   }
   models_to_use
 }
+
+#' Returns the reproductive efficiency from the logistic regression.
+#' It corresponds to the value of the second derivative at the inflection point
+#'
+#' Bibliography: Sari, B. G., Olivoto, T., Diel, M. I., Krysczun, D. K.,
+#' Lúcio, A. D. C.,& Savian, T. V. (2018). Nonlinear Modeling for Analyzing Data
+#' from Multiple Harvest Crops. Agronomy Journal, 110(6), 2331–2342.
+#' https://doi.org/10.2134/agronj2018.05.0307
+#'
+#' @param Asym parameter representing the asymptote of the logistic regression
+#' @param scal scale parameter of the logistic regression
+logis_reprod_effic <- function(Asym, scal) {
+  Asym / (4 * scal)
+}
+
+#' Returns the year of maximum production from the logistic regression.
+#' It corresponds to the value of x at the point of asymptotic deceleration;
+#' this is, the las inflection point of the second derivative.
+#'
+#' Bibliography: Mischan, M. M., Pinho, S. Z. D., & Carvalho, L. R. D.
+#' (2011).Determination of a point sufficiently close to the asymptote in
+#' nonlinear growth functions. Scientia Agricola, 68(1), 109–114.
+#' https://doi.org/10.1590/S0103-90162011000100016
+#'
+#' @param xmid parameter representing the x value at the inflection
+#' point of the logistic curve.
+#' @param scal scale parameter of the logistic regression
+logis_year_max_prod <- function(xmid, scal) {
+  scal * log(2 * sqrt(6) + 5) + xmid
+}
+
+#' Returns the integral of the fitted logistic function at x
+#'
+#' @param x the numeric value of the abscise
+#' @param Asym parameter representing the asymptote of the logistic regression
+#' @param xmid parameter representing the x value at the inflection
+#' point of the logistic curve.
+#' @param scal scale parameter of the logistic regression
+logis_integral <- function(x, Asym, xmid, scal) {
+  Asym * (scal * log(exp((-x + xmid) / scal) + 1) + x)
+}
