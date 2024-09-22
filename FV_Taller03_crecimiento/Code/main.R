@@ -174,6 +174,17 @@ filter_models <- function(tested_models, model_name) {
   models_to_use
 }
 
+#' Returns the ordinate of the logistic function
+#'
+#' @param x the numeric value of the abscise
+#' @param Asym parameter representing the asymptote of the logistic regression
+#' @param xmid parameter representing the x value at the inflection
+#' point of the logistic curve.
+#' @param scal scale parameter of the logistic regression
+logis_fun <- function(x, Asym, xmid, scal) {
+  Asym / (1 + exp((xmid - x) / scal))
+}
+
 #' Returns the reproductive efficiency from the logistic regression.
 #' It corresponds to the value of the second derivative at the inflection point
 #'
