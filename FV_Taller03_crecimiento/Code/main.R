@@ -4,7 +4,7 @@
 
 missing_packages <- character()
 for (package in c(
-  "tidyverse"
+  "tidyverse", "cowplot", "gtable"
 )) {
   if (!require(package, quietly = TRUE, character.only = TRUE)) {
     missing_packages <- append(missing_packages, package)
